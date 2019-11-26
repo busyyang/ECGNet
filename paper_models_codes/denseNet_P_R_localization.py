@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from ultis import *
 
 
+
 def build_model():
     """
     build a dense model
