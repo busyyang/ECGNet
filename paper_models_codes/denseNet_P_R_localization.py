@@ -14,7 +14,7 @@ def build_model():
     :return: None
     """
     model = keras.Sequential()
-    model.add(Dense(256, input_dim=300, activation='relu'))
+    model.add(Dense(256, input_dim=get_sample_length(), activation='relu'))
     model.add(Dense(128, activation='relu'))
     model.add(Dense(64, activation='relu'))
     model.add(Dense(2))
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     opt = keras.optimizers.sgd(lr=0.001)
     # set lr reduce scheduler
     reduce_lr = keras.callbacks.LearningRateScheduler(lr_scheduler)
-    model.compile(loss=loss_func, optimizer=opt)
+    model.compile(loss=loss_func, optimizer=opt, metrics=[acc_localization])
     # train the model
     hist = model.fit(X, Y, validation_split=0.2, epochs=1000, verbose=2, batch_size=2048, callbacks=[reduce_lr])
     print('=' * 100)

@@ -2,6 +2,17 @@ import scipy.io as scio
 import keras.backend as K
 import numpy as np
 
+LEN_SAMPLING = 300
+
+
+def get_sample_length():
+    """
+    return length of record
+    2019/11/26      YANG Jie    Init
+    :return:
+    """
+    return LEN_SAMPLING
+
 
 def load_data(path_file):
     """
@@ -18,13 +29,24 @@ def load_data(path_file):
 
 def loss_func(y_true, y_pre):
     """
-    user loss function in equation of RMSE
+    user loss function in equation of RMSE (equation 1)
     2019/11/26      YANG Jie    Init
     :param y_true:
     :param y_pre:
     :return:
     """
     return K.sqrt(K.mean(K.pow(y_true - y_pre, 2)))
+
+
+def acc_localization(y_true, y_pre):
+    """
+    return accuracy defined equation 3 in paper
+    :param y_true:
+    :param y_pre:
+    :return:
+    """
+    cost = loss_func(y_true, y_pre)
+    return (LEN_SAMPLING / 2. - cost) / (LEN_SAMPLING / 2.)
 
 
 def data_normalization(data):
@@ -70,6 +92,3 @@ def data_split(X, Y, radio=0.7):
     X_test = X[int(length * radio):, :]
     Y_test = Y[int(length * radio):, :]
     return X_train, Y_train, X_test, Y_test
-
-
-

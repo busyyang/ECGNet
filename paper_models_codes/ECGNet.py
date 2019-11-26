@@ -15,7 +15,7 @@ def build_model():
     :return: None
     """
     model = keras.Sequential()
-    model.add(Conv1D(16, 5, strides=3, padding='same', input_shape=(300, 1)))
+    model.add(Conv1D(16, 5, strides=3, padding='same', input_shape=(get_sample_length(), 1)))
     model.add(MaxPool1D(2))
     model.add(Conv1D(32, 5, strides=3, padding='same'))
     model.add(MaxPool1D(2))
