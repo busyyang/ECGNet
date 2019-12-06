@@ -5,7 +5,7 @@ import numpy as np
 import scipy.io as scio
 import matplotlib.pyplot as plt
 
-from ultis import *
+from utils import *
 
 
 def build_model():
@@ -31,7 +31,7 @@ def lr_scheduler(epoch):
     :param epoch:
     :return:
     """
-    if epoch % 600 == 0 and epoch != 0:
+    if epoch % 200 == 0 and epoch != 0:
         lr = K.get_value(model.optimizer.lr)
         K.set_value(model.optimizer.lr, lr * 0.2)
         print('lr changed to {}'.format(lr * 0.2))
@@ -53,12 +53,12 @@ if __name__ == '__main__':
     # print model information
     model.summary()
     # set learning rate and optimizer
-    opt = keras.optimizers.adam(lr=1e-5)
+    opt = keras.optimizers.adam(lr=1e-3)
     # set lr reduce scheduler
     reduce_lr = keras.callbacks.LearningRateScheduler(lr_scheduler)
-    model.compile(loss=loss_func, optimizer=opt)
+    model.compile(loss=loss_func, optimizer=opt, metrics=[acc_localization])
     # train the model
-    hist = model.fit(X, Y, validation_split=0.1, epochs=1000, verbose=2, batch_size=2048, callbacks=[reduce_lr])
+    hist = model.fit(X, Y, validation_split=0.1, epochs=500, verbose=2, batch_size=4096, callbacks=[reduce_lr])
     print('=' * 50)
     # plot loss
     plt.plot(hist.history['loss'])
